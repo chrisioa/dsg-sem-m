@@ -4,9 +4,11 @@ jobs:
     docker:
         - image: whatever4711/latex
     steps:
+        - checkout
         - run:
             name: Build latex
             command: 
+                ls -la
                 latexmk main.tex 
                 mkdir result || true
                 mv main.pdf result/
