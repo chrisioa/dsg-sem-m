@@ -2,14 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: whatever4711/latex
+        - image: whatever4711/latex
     steps:
-      - run:
-          name: Build latex
-          command: 
-            latexmk main.tex 
-            mkdir result || true
-            mv main.pdf result/
-            ls -lah result
-      - store-artifacts:
-        path: result
+        - run:
+            name: Build latex
+            command: 
+                latexmk main.tex 
+                mkdir result || true
+                mv main.pdf result/
+                ls -lah result
+        - store-artifacts:
+            path: result
