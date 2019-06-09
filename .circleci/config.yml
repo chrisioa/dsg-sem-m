@@ -9,7 +9,7 @@ jobs:
             name: Build latex
             command: |
                 ls -la
-                latexmk main.tex 
+                latexmk -pdf main.tex 
                 mkdir result || true
                 mv main.pdf result/
                 ls -lah result
