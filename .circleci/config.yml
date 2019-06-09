@@ -7,7 +7,7 @@ jobs:
         - checkout
         - run:
             name: Build latex
-            command: 
+            command: |
                 ls -la
                 latexmk main.tex 
                 mkdir result || true
