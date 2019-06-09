@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-        - image: whatever4711/latex
+        - image: koppor/texlive
     steps:
         - checkout
         - run:
@@ -10,7 +10,6 @@ jobs:
             command: |
                 ls -la
                 tlmgrinstall
-                wget http://mirrors.ctan.org/macros/latex/contrib/IEEEtran/IEEEtran.cls
                 latexmk main.tex 
                 mkdir result || true
                 mv main.pdf result/
