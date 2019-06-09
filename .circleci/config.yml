@@ -9,6 +9,7 @@ jobs:
             name: Build latex
             command: |
                 ls -la
+                tlmgrinstall
                 latexmk main.tex 
                 mkdir result || true
                 mv main.pdf result/
