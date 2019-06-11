@@ -1,32 +1,3 @@
-	\section{Introduction}
-%
-%1. Context
-%2. Problem
-%3. Problem relevant and nontrivial
-%4. Not solved before
-%5. My Plan for solving it
-
-``To move at full speed, it’s crucial to bring the networking operations teams into the DevOps chain,...''\footnote{https://siliconangle.com/2019/02/19/cloud-native-networking-for-devops-leaves-sdn-in-the-dust-cubeconversations-startupoftheweek/}.
-
-Many advances have been made in recent years towards making applications ready for the special environment of the cloud. Development of such programs needs to be adapted in order to be effective and efficient since it significantly departs from previous settings. Matthew Foemmel and Martin Fowler have proposed the influential practice of Continuous Integration and Deployment \cite{fowler_2006} \cite{fowler_foemmel_2000} in order to tackle the development side of this complex process. In their original work from 2000 they base their approach  on four principles:
-\begin{enumerate}
-	\item Single place for the source code
-	\item Automated build process
-	\item Automated tests
-	\item Make executable reachable
-\end{enumerate}
-This process provides a solid basis for the collaboration on any software project, but is especially useful when working on a project that has its place in the cloud. 
-
-This paradigm has been expanded to not only comprise the development part, but also architectural best practices in the so-called 12-factor methodology as formulated by Adam Wiggins. and drafted by employees of the cloud platform Heroku.  It summarizes the most important aspects that need to be taken into consideration to make life easier when designing cloud native applications. These guidelines contain strategies to avoid recurring problems when developing in the cloud environment, like the fragmentation of the codebase, keeping track of and managing all needed dependencies, placing the configuration in the environment and many more \cite{hofmann2017microservices} \cite{12Factor}. 
-
-While there have been many advances in making applications ready for the cloud  and using automated build chains like in Continuous Integration and Delivery,  the networking infrastructure has long remained old-school monolithic. Functionalities that are specific to the setup, orchestration, administration and enhancement of large scale networks have long been implemented into specialized hardware middleboxes. Such services range from the security domain (intrusion detection, firewalls) to the optimization of the Wide Area Network (WAN). Deploying and managing dedicated hardware for such services quickly results in high investment and operation costs and hugely limits the flexibility of the network. With the ever growing reliance on cloud networks and infrastructures to provide a plethora of services, it is crucial that the management of the underlying network is made much more reactive and adaptable. 
-
-In order to take full advantage of the highly modular and flexible cloud concepts, the supporting network has to be able to quickly and reliably adapt to changes. The guiding question for this paper is to give an overview and evaluate concepts that have been put forward to tackle these limitations by applying the previously mentioned strategies to the network domain.
-
-A first step into this direction can be taken by providing network functions  and services that have traditionally been dependent on proprietary and custom hardware as virtualized and independent software entities that can run on general-purpose hardware. This should break up the dependency on specialized middleboxes, and facilitate the provisioning and management of the services. Although virtualization has had a great impact, there still are unsolved problems that need addressing. These include and are not limited to the speed of upgrades and restarts, limited scalability and the fact that often services have been ported to the cloud in a \textit{lift and shift manner} without taking full advantage of the Cloud paradigm \cite{CNF}.
-
-In a second step it is important to find solutions to these problems, especially when thinking about how it is possible to efficiently design and manage virtualized network functions. Orienting these functions along the lines of the cloud has coined the term of \textit{Cloud Native Network Functions} \cite{CNF} \cite{inproceedings} \cite{evolutionnfv}. 
-
 
 
 \section{Related Work}
