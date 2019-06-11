@@ -3,15 +3,6 @@
 \section{Related Work}
 This section is about work that is related to the topic of my seminar thesis, you know?
 
-\section{Enabling Technologies}
-Extending Networking into the Virtualization Layer (see \cite{pfaff2009extending}) summarizes how the traditionally monolithic and physically bound domain of networking can be broken up and modularized by means of virtualization. The following three parts would focus on enabling and supporting technologies needed to realize the vision of this new paradigm. First, the business logic needs to be packaged and executed. This can happen in virtual machines, containers etc. Following that, virtualized switching technology needs to be put in place to allow for successful packet forwarding. One technology is Open vSwitch which is an implementation of a virtual switch, connecting virtual interfaces of VMs for instance with physical interfaces. Docker and Kubernetes additionally provide means for communication between several, executable artifacts.
-\todo{You quickly move to a tool/implementation. Can you stay on the conceptual level more before you dive into possible solutions? Maybe explain that using a diagram would help?} 
-\subsection{Virtual Machines to Containerization}
-\subsection{Open vSwitch}
-\subsection{Kubernetes as Container orchestrator}
-
-\quad
-
 \section{Network Functions}
 Before venturing into Virtualized Network Functions, it needs to be clarified what network functions are in general, how they are implemented and composed \textit{physically}, and what the motivations are to move towards virtualizing them. 
 \subsection{Physical Network Service Composition}
@@ -22,6 +13,16 @@ The inner makings of a cloud: A lot of custom hardware (middleboxes) for service
 \begin{description}
 	\item [SDN] SDN: Breakup of the control and data plane, routing hardware (switches) can be organized and ()re-)configured from a distributed controller software without the need of cumbersome manual efforts.
 \end{description}
+
+\section{Enabling Technologies}ea
+Extending Networking into the Virtualization Layer (see \cite{pfaff2009extending}) summarizes how the traditionally monolithic and physically bound domain of networking can be broken up and modularized by means of virtualization. The following three parts would focus on enabling and supporting technologies needed to realize the vision of this new paradigm. First, the business logic needs to be packaged and executed. This can happen in virtual machines, containers etc. Following that, virtualized switching technology needs to be put in place to allow for successful packet forwarding. One technology is Open vSwitch which is an implementation of a virtual switch, connecting virtual interfaces of VMs for instance with physical interfaces. Docker and Kubernetes additionally provide means for communication between several, executable artifacts.
+\todo{You quickly move to a tool/implementation. Can you stay on the conceptual level more before you dive into possible solutions? Maybe explain that using a diagram would help?} 
+\subsection{Virtual Machines to Containerization}
+\subsection{Open vSwitch}
+\subsection{Kubernetes as Container orchestrator}
+
+\quad
+
 
 \subsubsection{Virtualized Network Functions in Network Function Virtualization ( VNFs vs NFVs )}
 NFV and VNF basics \cite{mijumbi2016network} NFV real-world impact \cite{bilal2016impact} Service orchestration \cite{de2018network}
@@ -42,6 +43,15 @@ ETSI proposing NFV architecture already in 2012 in a white paper  \cite{nfv_wp}.
 	\caption{This is the caption \cite{CNF}}
 	\label{img:cloudNativeApp}
 \end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{images/arch.png}
+	\caption{This is the caption \cite{mijumbi2016network}}
+	\label{img:arch}
+\end{figure}
+
+
 
 \subsection{Interoperability of VNFs}
 A lot of proprietary and custom build environments which VNFs are build for and deployed onto. This limits their effectiveness considerably.
@@ -76,7 +86,7 @@ Combining several concepts like for instance an SDN-controller deploying and man
 	
 	\item [CNF White Paper by Cisco \cite{CNF}] A white paper sponsored by Cisco provides insights into the point-of-view of a vendor. They set out to define what CNFs are, and how potential clients can benefit from them. They use Kubernetes as the main orchestrator and suggest it for further roles, too. 
 	
-	\item [Cloud-native 5G \cite{inproceedings}] The authors layout the implementation of VNFs that adhere to Cloud-native design principles for 5G. Furthermore they summarize existing projects and show an exemplary Use Case for this technology. Very relevant to my work, they use Docker for prototyping and are migrating to Kubernetes for the Cloud Native NFVI (Network Functions Virtualization Infrastructure) interface. 
+	\item [Cloud-native 5G \cite{inproceedings}] The authors layout the implementation of VNFs that adhere to Cloud-native design principles for 5G. Furthermore they summarize existing projects and show an exemplary Use Case for this technology. Very relevant to my work, they use Docker for prototyping and are migrating to Kubernetes for the Cloud Native NFVI (Network Functions Virtualization Infrastructure) interface. A NFVI is specified here \cite{mijumbi2016network}.
 	
 	\todo{5G would also bring in an interesting perspective. You could show what kind of challenges are introduced with 5G for the network as well. }
 	\todo{Reference/Specification for NFVI}
