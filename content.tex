@@ -1,18 +1,6 @@
+\input{intro}
 
-
-\section{Related Work}
-This section is about work that is related to the topic of my seminar thesis, you know?
-
-\section{Network Functions}
-Before venturing into Virtualized Network Functions, it needs to be clarified what network functions are in general, how they are implemented and composed \textit{physically}, and what the motivations are to move towards virtualizing them. 
-\subsection{Physical Network Service Composition}
-The inner makings of a cloud: A lot of custom hardware (middleboxes) for services like intrusion detection, firewalls and the optimization of the Wide Area Network (WAN) have often been used (and still used to this day), in extremely high numbers. This leads to several impairments with growing networks: High investment costs, high operational costs, no or limited upgradeability and automatization   \cite{sherry2016middleboxes}. This part shall provide motivation to use aforementioned technologies to provide a more flexible and automatable solution. This will only gain importance with higher complexity and higher demand of the networks that are being built (Growing cloud data centers, implementation of 5G, etc). 
-
-\subsection{Network Virtualization}
-\subsubsection{Software Defined Networking}
-\begin{description}
-	\item [SDN] SDN: Breakup of the control and data plane, routing hardware (switches) can be organized and ()re-)configured from a distributed controller software without the need of cumbersome manual efforts.
-\end{description}
+\input{functions}
 
 \section{Enabling Technologies}ea
 Extending Networking into the Virtualization Layer (see \cite{pfaff2009extending}) summarizes how the traditionally monolithic and physically bound domain of networking can be broken up and modularized by means of virtualization. The following three parts would focus on enabling and supporting technologies needed to realize the vision of this new paradigm. First, the business logic needs to be packaged and executed. This can happen in virtual machines, containers etc. Following that, virtualized switching technology needs to be put in place to allow for successful packet forwarding. One technology is Open vSwitch which is an implementation of a virtual switch, connecting virtual interfaces of VMs for instance with physical interfaces. Docker and Kubernetes additionally provide means for communication between several, executable artifacts.
