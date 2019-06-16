@@ -1,5 +1,5 @@
 \input{intro}
-
+\input{relatedWork}
 \input{functions}
 
 \section{Enabling Technologies}ea
@@ -23,6 +23,7 @@ NFV and VNF basics \cite{mijumbi2016network} NFV real-world impact \cite{bilal20
 \subsubsection{Organizations and Motivations}
 ETSI proposing NFV architecture already in 2012 in a white paper  \cite{nfv_wp}. The CNCF (Cloud-native Computing Foundation) has launched a testbed to compare the performance of VNFs on an OpenStack enviromnent versus a Kubernetes setup \footnote{https://www.cncf.io/announcement/2019/02/25/cncf-launches-cloud-native-network-functions-cnf-testbed/}	
 
+
 \section{Cloud-native NFV}
 
 \begin{figure}
@@ -42,6 +43,7 @@ ETSI proposing NFV architecture already in 2012 in a white paper  \cite{nfv_wp}.
 
 
 \subsection{Interoperability of VNFs}
+\subsection{Cloud Native Architecture}
 A lot of proprietary and custom build environments which VNFs are build for and deployed onto. This limits their effectiveness considerably.
 \subsection{Design Principles for Cloud-native VNFs }
 What is cloud-native, how do these principles relate to  the networking domain? Whitepapers published by Analysys Mason \cite{evolutionnfv} and Cisco \cite{CNF}
@@ -51,9 +53,7 @@ Virtual Machines, Openstack vs Docker and Kubernetes managing and orchestrating 
 Definition, advantages, state-of-the-art, testbed 
 \todo{I am missing somewhat talking about the problems. What are the challenges that NF solve in general? What changes in the cloud native / K8s world? What does that mean for the challenges that traditional NF solve? I have the feeling, you jump too quickly to the solutions and showing advantages and disadvantages (which is great), but forget to define the problems and challenges clearly before. }
 
-\section{Conclusion \& Future Work}
-Combining several concepts like for instance an SDN-controller deploying and managing VNFs/CNFs  on demand could create even more efficient and interesting possibilities where specific functions and services could deploy dynamically when they are being requested. Lifecycle management can be done by the SDN-Controller. 
-\todo{Future Work typically means what YOU would do if you had infinite time for your research. Not what the technology will be in the future. Try to use a different name for that section. Or did I read that wrongly?}
+\input{conclusion}
 
 
 \section{List of references}

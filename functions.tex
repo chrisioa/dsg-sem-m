@@ -1,4 +1,5 @@
 \section{Physical Network Service Composition}
+\label{sec:physical}
 Before venturing into Virtualized Network Functions, it needs to be clarified what network functions are in general, how they are implemented and composed \textit{physically}, and what the motivations are to move towards virtualizing them. 
 
 Networks are the backbone of any modern IT infrastructure, and with the unstoppable rise of  Cloud Computing services their importance is ever increasing. This sharp rise in relevance causes the setup and operation of previously unthinkable data centers. Providing specific functioniality in such an environment has traditionally been the task of dedicated hardware that implemented services of many different domains. These include security functions that setup firewalls, scan for viruses and detect intruders but might be applied to ``...to any data plane packet processing and control plane function...''\cite{nfv_wp}. The advantage of using ASICs (Application-specific integrated circuit) lies in the potential for optimization. When designing a device that serves a very specific purpose, the application scenario can be anticipated much better than with general-purpose hardware. This typically leads to lower power consumption, higher efficiency and better output, but drives up the purchasing cost. Additionally, the operational cost is also high, since acquiring, configuring, deploying and maintaining such middleboxes is often a tedious, manual-heavy task. 
@@ -34,38 +35,42 @@ As already mentioned, virtualization and providing the network functionality as 
 \subsection{Software Defined Networking}
 \label{sec:sdn}
 
-The unobstructed operation of highly distributed applications and the offer of services depends highly on mitigating faults in the network and the appropriate reaction to fluctuating load. In traditional networks, there is hardly any support to implement automatic policy change as a reaction to events like spikes in load or the reconfiguration when faults occur in the system \cite{kreutz2015software}. When faced with such situations, ''[\dots] every single hardware instance [\dots]`` \cite{grossmann2013auto} is in need for manipulation to realize the desired change.  The need for manual intervention is responsible for immense risk \todo{GO ON HERE}
-
-The concept of Software Defined Networking focuses on allowing for a (re-)configuration effort that works through software and eliminates the need for repetitive, vendor-specific and manual setup and administrative tasks.  
-
-\begin{comment}
-	
-The resulting complexity renders such networks almost static, since the maintenance, the update effort and associated risk of service disruption is skyrocketing. This process of slowing down innovation, the evolution of the Internet and network technology is often described by the term \textit{ossification} \cite{nunes2014survey}. 
-
-\hyphenation{par-a-digm}
-As a reaction to the growing inadequateness of traditional networks, the architectural paradigm of Software-defined Networking has gained a lot of momentum and popularity. One of the core principles that enables higher flexibility is the separation of the control plane from the data plane. Networking hardware has long been \textit{vertically integrated}, meaning that these two planes had been both represented in the device itself, isolating it from external manipulation and "[...] reducing flexibility and hindering innovation [...]" \cite{kreutz2015software}. The resulting control layer abstracts from all network devices that formerly were tightly coupled, thus abolishing the need for manual and individual configuration. A comparison between these two concepts can be seen in figure \ref{img:sdn}. 
-
+The unobstructed operation of highly distributed applications and the offer of services depends highly on mitigating faults in the network and the appropriate reaction to fluctuating load. In traditional networks, there is hardly any support to implement automatic policy change as a reaction to events like spikes in load or the reconfiguration when faults occur in the system \cite{kreutz2015software}. When faced with such situations, ''[\dots] every single hardware instance [\dots]`` \cite{grossmann2013auto} is in need for manipulation to realize the desired change.  The need for manual intervention is responsible for immense risk regarding service interruption. The high complexity associated with this kind of networks introduces a lot of inertia and in the worst case ends in a state known as \textit{ossification} \cite{nunes2014survey}. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{images/sdn.png}
-	\caption{Comparison between traditional (left) and Software-defined Networks (right), source \cite{hu2014survey}}
+	\includegraphics[width=0.48\textwidth]{images/sdn.png}
+	\caption{Comparison between traditional (left) and Software-defined Networks (right), source \cite{li2015software}}
 	\label{img:sdn}
 \end{figure}
 
-On the left, the control and the data plane are vertically integrated in each device, whereas on the right, the devices are only concerned with forwarding traffic and the control part is extracted into a separate layer. SDN controllers located on this layer can offer a logically centralized access to manage and program connected switches, routers and other middleboxes via a common protocol. This decoupling considerably reduces the effort that has to be put in when a change in the network structure or policy is desired. To add, many SDN controllers support the integration of custom applications, which enable the tailoring of the controller to the needs of a specific network without having to wait for a particular vendor to integrate the requested feature. 
+Breaking up the rigidity is of utmost importance to building more flexible and cheaper networks that can  meet the demands of the future. Software Defined Networking is the technology of choice when there is a need for programmable networks. The core premise is the separation of the so-called control- and data planes, which are traditionally vertically integrated in switching devices. The logic that controls the packet forwarding and orchestration of the data flow is located inside the devices, just as well as the data structure that stores the rules for forwarding. This disallows for external manipulation while introducing the need for relying upon the vendor spefic way of configuration and thus ''[\dots]  reducing flexibility and hindering innovation [\dots]``\cite{kreutz2015software}.
+
+In SDN the control layer is being externalized and abstracted from all the switching infrastructure into an external controller instance that provides multiple means of organizing and configuring the traffic flow in the managed devices. Figure \ref{img:sdn} provides a comparison between the two concepts, where the traditional, vertically integrated switches can be seen on the left. Each device contains its own logic that controls the incoming and outgoing packets. Additionally, a middlebox that might provide the functionality of a firewall, is closely attached to the middlebox on the right circumventing the problem that the switches and routers only provide limited configuration. Problems arising from the reliance on such middleboxes have been discussed in section \ref{sec:physical}.  On the right hand side, the control plane has been externalized from the three nodes into a centralized software control. The solid edges represent data flow, while the dashed lines show the control and monitoring traffic that takes place between the controller and the boxes under its domain.
+
+In this kind of architecture, there are multiple, very important advantages: Policies can be defined and enforced on all devices almost instantly, without the need for cumbersome, vendor-specific configuration effort. The boxes no longer need to implement any control logic, and are reduced to forwarding switches that only need to support the communication with an SDN controller. Visualization and monitoring of the devices is taken care of by the same program, facilitating the operation and problem solving. A common protocol provides the basis for communication and the sending of commands between the devices and the controller that can run on any kind of hardware. Finally, such controllers often provide an API to write custom applications, allowing for very fine-grained customization that circumvents the need to wait for a hardware vendor to implement and roll-out a new feature.  
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.49\textwidth]{images/sdnAPIs.png}
+	\caption{The different elements of the SDN architecture, connected via several APIs. The northbound for application communication, westbound for inter controller synchronization, eastbound for legacy networks and southbound for device communication, source \cite{jarschel2014interfaces}}
+	\label{img:sdnAPIs}
+\end{figure}
+
+\newpage
+Programming of the devices throughout the network works over a standardized protocol that allows to manipulate the data or forwarding plane of each device. The Open Network Foundation (ONF) develops manages \textit{OpenFlow}, a protocol that was originally proposed so that researchers could ''[\dots] run experiments on heterogeneous switches in a uniform way at line-rate nad with high port-density;``\cite{mckeown2008openflow}. As the technology matured, it has become one of the best known enabling technology for SDN. Generally speaking, a software controller can support multiple of these protocols via its Southbound API making it even more flexible. The choice of such a protocol depends on what protocols the managed devices support. 
+
+With OpenFlow for instance, a controller can manipulate a so-called \textit{flow table } for each switch. This table represents the packet forwarding rules that determine the handling of an incoming packet. If no rule applies, the standard behavior is to send the packet for further analysis to the controller, which will then analyze the packet. This is where the power of SDN comes to play, since an in-depth analysis of the packet can reveal useful information that can be used to determine how to deal with it. The packet can be ignored, it can be forwarded and new rules and routes can be established, or a custom application could trigger an alarm or even trigger the deployment of a new service that might be overloaded or missing. Extending the logic via additional applications is done via the Northbound API. The Westbound API is needed to provide the communication between multiple instance of the controller software. These might be needed to provide fault tolerance or a logical separation of the devices. The last API is located Eastbound and provides a point of communication with legacy networks and downward compatibility. 
+\todo{Read again}
+
+East and Westbound APIs are not part of all architecture specifications and present in Sezer \textit{et al.} \cite{sezer2013we} for instance. The authors reserve the west- and eastbound APIs for inter cluster communication of multiple controller instances. \cite{hu2014survey} \cite{jarschel2014interfaces} \cite{nunes2014survey} \cite{sezer2013we} \cite{shin2012software} \cite{jammal2014software}.
+
+\begin{comment}
 
 The programming of the network hardware is realized by using a standardized protocol for communication, depending on what the controller and the managed switches require. One protocol used for this purpose is OpenFlow. The application programming interface (API) that connects the controller to the network infrastructure via this protocol is called the Southbound API as can be seen in figure \ref{img:sdnAPIs}, where the middle box contains the SDN controller software.
 Situated to the left, multiple instances of the controller can communicate with each other. This so-called westbound API allows for the distribution of the network management duties among more than one controller. This helps guarantee higher availability, fault tolerance and scalability. Additionally, separation of concerns can be realized by letting specific instances take care of one logically coherent part of network infrastructure and its devices. To the right side the eastbound API allows for the communication with traditional, non-SDN networks which provides downward compatibility. The implementation is highly dependent on the protocols and technology employed in the legacy networks. 
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\textwidth]{images/sdnAPIs.png}
-	\caption{The different elements of the SDN architecture, connected via APIs, source \cite{jarschel2014interfaces}}
-	\label{img:sdnAPIs}
-\end{figure}
 
-This distinction between east and westbound is not present in all architecture specifications and omitted in Sezer \textit{et al.} \cite{sezer2013we} for instance. In this approach both the east and the westbound APIs serve the inter cluster communication of multiple controller instances. Finally, the diagram also expands towards the top via the Northbound API connecting an application context to the SDN controller. This illustrates the possibility of expansion by implementing custom apps that can access the core services provided by the SDN controller  \cite{hu2014survey} \cite{jarschel2014interfaces} \cite{nunes2014survey} \cite{sezer2013we} \cite{shin2012software} \cite{jammal2014software}.
 
 \end{comment}
 
