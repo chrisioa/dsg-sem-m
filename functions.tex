@@ -2,16 +2,17 @@
 \label{sec:physical}
 Before venturing into Virtualized Network Functions, it needs to be clarified what network functions are in general, how they are implemented and composed \textit{physically}, and what the motivations are to move towards virtualizing them. 
 
-Networks are the backbone of any modern IT infrastructure, and with the unstoppable rise of  Cloud Computing services their importance is ever increasing. This sharp rise in relevance causes the setup and operation of previously unthinkable data centers. Providing specific functioniality in such an environment has traditionally been the task of dedicated hardware that implemented services of many different domains. These include security functions that setup firewalls, scan for viruses and detect intruders but might be applied to ``...to any data plane packet processing and control plane function...''\cite{nfv_wp}. The advantage of using ASICs (Application-specific integrated circuit) lies in the potential for optimization. When designing a device that serves a very specific purpose, the application scenario can be anticipated much better than with general-purpose hardware. This typically leads to lower power consumption, higher efficiency and better output, but drives up the purchasing cost. Additionally, the operational cost is also high, since acquiring, configuring, deploying and maintaining such middleboxes is often a tedious, manual-heavy task. 
+Networks are the backbone of any modern IT infrastructure, and with the unstoppable rise of  Cloud Computing services their importance is ever increasing. This sharp rise in relevance causes the setup and operation of previously unthinkable data centers. Providing specific functioniality in such an environment has traditionally been the task of dedicated hardware that implemented services of many different domains. These include security functions that setup firewalls, scan for viruses and detect intruders but might be applied to ``...to any data plane packet processing and control plane function...''\cite{nfv_wp}. The advantage of using Application-specific integrated circuit (ASICs) lies in the potential for optimization. When designing a device that serves a very specific purpose, the application scenario can be anticipated much better than with general-purpose hardware. This typically leads to lower power consumption, higher efficiency and better output, but drives up the purchasing cost. Additionally, the operational cost is also high, since acquiring, configuring, deploying and maintaining such middleboxes is often a tedious, manual-heavy task. Nevertheless, this type of \textit{physical} function delivery has historically been the primary way of building and operating networks, especially in a data center or telecommunication and internet service provider environment. This is due to the fact that there have not been production-ready, open source solutions available that could have been deployed on so-called \textit{whiteboxes}. White boxes are devices built from general-purpose hardware that are often employed in software defined networks, due to their modifiable nature. The logic was rather already integrated in the hardware, with almost no chance of customizing them.
 
-\begin{figure}[H]
+
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1\linewidth]{images/middleboxesNumbers.png}
 	\caption{Middlebox deployments in enterprise networks of various size (< 1k - >100k hosts). Y-axis in log scale, source \cite{sherry2016middleboxes}}
 	\label{img:middleboxesNumbers}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1\linewidth]{images/middleboxesCost.png}
 	\caption{Administrator-estimated spending on middlebox hardware per network \cite{sherry2016middleboxes}}
@@ -20,90 +21,153 @@ Networks are the backbone of any modern IT infrastructure, and with the unstoppa
 
 Figure \ref{img:middleboxesNumbers} illustrates the sheer amount of devices that are needed to guarantee the operation of enterprise networks of various size. Sherry \cite{sherry2012survey} \cite{sherry2016middleboxes} investigated their distribution among 57 educational and enterprise networks by surveying the operators for their experiences with the network appliances. Special focus was put on the quantity, their concerns, the cost and the ease of management. The results of this work give a good indication why this situation is unsustainable for future networks:  The number of these boxes is very high. To put it into perspective, the amount of these function specific devices approaches that of fundamental hardware like L3/L2 infrastructure. The associated cost of deploying such a large number of devices can be inspected in figure \ref{img:middleboxesCost} and indicates that investment cost is skyrocketing. Naturally, this might not be a problem for small companies that use a little amount of these devices. However, Cloud and Internet Service Providers rely on building, maintaining and reorganizing enormous computer networks and thus are driving forces behind alternative concepts in this domain \cite{sherry2016middleboxes} \cite{sherry2012survey}.
 
-This will only gain importance with higher complexity and higher demand of the networks that are being built. Growing cloud data centers, implementation of 5G, further demanding services provided in the cloud like for instance Google Stadia, a streaming service for gaming. The last one is a very interesting scenario since low latency and high bandwidth is of utmost importance and needs to be guaranteed. Additionally, the provisioning and deployment of resources needs to happen instantly. This project might be paving the way for more ``serious'' applications like taking over functionality in autonomous driving. Fulfilling the such demanding requirements is only possible if the supporting network is highly flexible and can guarantee not only continuous connectivity, but also high performance. 
 
 \section{Network Virtualization}
+This will only gain importance with higher complexity and higher demand of the networks that are being built. Growing cloud data centers, implementation of 5G, further demanding services provided in the cloud like for instance Google Stadia, a streaming service for gaming. The last one is a very interesting scenario since low latency and high bandwidth is of utmost importance and needs to be guaranteed. \todo{source} Additionally, the provisioning and deployment of resources needs to happen instantly. This project might be paving the way for more ``serious'' applications like taking over functionality in autonomous driving. 
+
+Another relevant use case scenario includes the possibility of implementing a \textit{tactile internet} that allows to put distant environments in someone's reach. Such a scenario where this might be needed is remote surgery, where a surgeon would use a remote controlled robot to perform a procedure in a distant place. In order for this to work, unforeseen latency, fault-tolerance and reliability has to be ensured. Fulfilling such demanding requirements is only possible if the supporting network is highly flexible and can guarantee not only continuous connectivity, but also high performance. 
+
+Finally, the most relevant functionality needed in the future is the ability to flexibly reorganize network devices. Providing means for abstraction from physical hardware can be done by using \textit{network slices} that compose and orchestrate parts of a network for a specific use case, or as a commodity that can be bought by customers.
+
+All in all the growing capabilities of the fifth generation network can only be efficiently made use of and marketed, if the infrastructure is flexible enough to allow for all of this. 
+
+
 The previously described problem can only be solved when the need for the manual configuration and deployment that takes place on a box-to-box basis of function-specific hardware can be eliminated. The answer to this challenge is virtualization of the functionality in question which makes it both more configurable and highly maintainable. In order to take advantage of this virtualization, though, the encompassing network needs to support feasible possibilities to manage the virtual instances of network functions. Without a degree of automation and a centralized, programmatic approach, there would not be a huge benefit of going from physical to virtual. Software Defined Networking is ideal and often goes hand in hand with using these cutting edge technologies.
 
- Aside from the performance standpoint, this is also an ideal way to reduce cost significantly. This is due to multiple factors, such as the high purchasing cost of the middleboxes. Additionally, the devices often provide vendor-specific means for configuration which entails high administrative and operational cost since personnel training and special spare parts are needed.  The investment into retraining the staff that has to work with such devices can even influence the decision making process since without the expertise, smooth operations of the network are questionable. 
+Aside from the performance standpoint, this is also an ideal way to reduce cost significantly. This is due to multiple factors, such as the high purchasing cost of the middleboxes. Additionally, the devices often provide vendor-specific means for configuration which entails high administrative and operational cost since personnel training and special spare parts are needed.  The investment into retraining the staff that has to work with such devices can even influence the decision making process since without the expertise, smooth operations of the network are questionable. 
 
-Once it is time to update or upgrade the parts of the network that provide certain functionality, another downside becomes quickly apparent: the only way to to get the newest features is to replace the outdated hardware with the newer model. And if more instances of the functionality is needed, there acquiring more devices is the only choice to allow for scalability or provide fault tolerance via replication. 
+Once it is time to update or upgrade the parts of the network that provide certain functionality, another advantage becomes quickly apparent: With purpose-specific hardware, the only way to to get the newest features is to replace the outdated hardware with the newer model. And if more instances of the functionality is needed, there acquiring more devices is the only choice to allow for scalability or provide fault tolerance via replication. Additionally, when a new appliance comes out, until it has been successfully deployed, it often already is outdated. With softwarized instances of this functionality, proven software development practices can easily be applied in order to mitigate this problem. Updates, upgrades or in the worst case, reinstallation of a program guarantee an easy path to deploy the newest functionality. Replication of a service can also be done much easier and quicker by means of virtualization. Spinning up an additional virtual machine, or in later scenarios another container, is more practical than relying upon physical boxes. 
 
-As already mentioned, virtualization and providing the network functionality as software packages that can run on general-purpose hardware anywhere is the core promise of network virtualization. This paradigm has caused a paradigm shift in recent years in networking that has lead to many projects and software solutions. In the following sections Software Defined Networking (SDN), Network Function Virtualization and Virtualized Network Functions will be briefly introduced as the main driving forces and central ideas behind the virtualization efforts. 
+As already mentioned, virtualization and providing the network functionality as software packages that can run on general-purpose hardware anywhere is the core promise of network virtualization. This principle has caused a paradigm shift in recent years in networking that has lead to many projects and software solutions. In the following sections Software Defined Networking (SDN), Network Function Virtualization (NFV) and Virtualized Network Functions (VNF) will be briefly introduced as the main driving forces and central ideas behind the virtualization efforts. 
 
 
 \subsection{Software Defined Networking}
 \label{sec:sdn}
 
-The unobstructed operation of highly distributed applications and the offer of services depends highly on mitigating faults in the network and the appropriate reaction to fluctuating load. In traditional networks, there is hardly any support to implement automatic policy change as a reaction to events like spikes in load or the reconfiguration when faults occur in the system \cite{kreutz2015software}. When faced with such situations, ''[\dots] every single hardware instance [\dots]`` \cite{grossmann2013auto} is in need for manipulation to realize the desired change.  The need for manual intervention is responsible for immense risk regarding service interruption. The high complexity associated with this kind of networks introduces a lot of inertia and in the worst case ends in a state known as \textit{ossification} \cite{nunes2014survey}. 
+The unobstructed operation of highly distributed applications and the offer of services depends highly on mitigating faults in the network and the appropriate reaction to fluctuating load. In traditional networks, there is hardly any support to implement automatic policy change as a reaction to events like spikes in load or the reconfiguration when faults occur in the system \cite{kreutz2015software}. When faced with such situations, ''[\dots] every single hardware instance [\dots]`` \cite{grossmann2013auto} is in need for manipulation to realize the desired change.  The need for manual intervention is responsible for immense risk regarding service interruption. The high complexity associated with this kind of networks introduces a lot of inertia and in the worst case ends in a state known as \textit{ossification} \cite{nunes2014survey}. Providing network abstractions as a service is unthinkable in such a scenario, since quick, automatic and seamless planning, provisioning and reliable configuration can not be guaranteed.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.48\textwidth]{images/sdn.png}
 	\caption{Comparison between traditional (left) and Software-defined Networks (right), source \cite{li2015software}}
 	\label{img:sdn}
 \end{figure}
-
+%PNF to NFV
 Breaking up the rigidity is of utmost importance to building more flexible and cheaper networks that can  meet the demands of the future. Software Defined Networking is the technology of choice when there is a need for programmable networks. The core premise is the separation of the so-called control- and data planes, which are traditionally vertically integrated in switching devices. The logic that controls the packet forwarding and orchestration of the data flow is located inside the devices, just as well as the data structure that stores the rules for forwarding. This disallows for external manipulation while introducing the need for relying upon the vendor spefic way of configuration and thus ''[\dots]  reducing flexibility and hindering innovation [\dots]``\cite{kreutz2015software}.
 
 In SDN the control layer is being externalized and abstracted from all the switching infrastructure into an external controller instance that provides multiple means of organizing and configuring the traffic flow in the managed devices. Figure \ref{img:sdn} provides a comparison between the two concepts, where the traditional, vertically integrated switches can be seen on the left. Each device contains its own logic that controls the incoming and outgoing packets. Additionally, a middlebox that might provide the functionality of a firewall, is closely attached to the middlebox on the right circumventing the problem that the switches and routers only provide limited configuration. Problems arising from the reliance on such middleboxes have been discussed in section \ref{sec:physical}.  On the right hand side, the control plane has been externalized from the three nodes into a centralized software control. The solid edges represent data flow, while the dashed lines show the control and monitoring traffic that takes place between the controller and the boxes under its domain.
 
-In this kind of architecture, there are multiple, very important advantages: Policies can be defined and enforced on all devices almost instantly, without the need for cumbersome, vendor-specific configuration effort. The boxes no longer need to implement any control logic, and are reduced to forwarding switches that only need to support the communication with an SDN controller. Visualization and monitoring of the devices is taken care of by the same program, facilitating the operation and problem solving. A common protocol provides the basis for communication and the sending of commands between the devices and the controller that can run on any kind of hardware. Finally, such controllers often provide an API to write custom applications, allowing for very fine-grained customization that circumvents the need to wait for a hardware vendor to implement and roll-out a new feature.  
-
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.49\textwidth]{images/sdnAPIs.png}
 	\caption{The different elements of the SDN architecture, connected via several APIs. The northbound for application communication, westbound for inter controller synchronization, eastbound for legacy networks and southbound for device communication, source \cite{jarschel2014interfaces}}
 	\label{img:sdnAPIs}
 \end{figure}
 
-\newpage
-Programming of the devices throughout the network works over a standardized protocol that allows to manipulate the data or forwarding plane of each device. The Open Network Foundation (ONF) develops manages \textit{OpenFlow}, a protocol that was originally proposed so that researchers could ''[\dots] run experiments on heterogeneous switches in a uniform way at line-rate nad with high port-density;``\cite{mckeown2008openflow}. As the technology matured, it has become one of the best known enabling technology for SDN. Generally speaking, a software controller can support multiple of these protocols via its Southbound API making it even more flexible. The choice of such a protocol depends on what protocols the managed devices support. 
+In this kind of architecture, there are multiple, very important advantages: Policies can be defined and enforced on all devices almost instantly, without the need for cumbersome, vendor-specific configuration effort. The boxes no longer need to implement any control logic, and are reduced to forwarding switches that only need to support the communication with an SDN controller. Visualization and monitoring of the devices is taken care of by the same program, facilitating the operation and problem solving. A common protocol provides the basis for communication and the sending of commands between the devices and the controller that can run on any kind of hardware. Finally, such controllers often provide an API to write custom applications, allowing for very fine-grained customization that circumvents the need to wait for a hardware vendor to implement and roll-out a new feature. As a side note, since this figure suggests the controller constitutes a single point-of-failure, many controllers support the concept of clustering. Deploying multiple instances mitigates the risks when one is failing. 
 
-With OpenFlow for instance, a controller can manipulate a so-called \textit{flow table } for each switch. This table represents the packet forwarding rules that determine the handling of an incoming packet. If no rule applies, the standard behavior is to send the packet for further analysis to the controller, which will then analyze the packet. This is where the power of SDN comes to play, since an in-depth analysis of the packet can reveal useful information that can be used to determine how to deal with it. The packet can be ignored, it can be forwarded and new rules and routes can be established, or a custom application could trigger an alarm or even trigger the deployment of a new service that might be overloaded or missing. Extending the logic via additional applications is done via the Northbound API. The Westbound API is needed to provide the communication between multiple instance of the controller software. These might be needed to provide fault tolerance or a logical separation of the devices. The last API is located Eastbound and provides a point of communication with legacy networks and downward compatibility. 
-\todo{Read again}
+Programming of the devices throughout the network works over a standardized protocol that allows to manipulate the data or forwarding plane of each device. The Open Network Foundation (ONF) develops and manages \textit{OpenFlow}, a protocol that was originally proposed so that researchers could ''[\dots] run experiments on heterogeneous switches in a uniform way at line-rate and with high port-density;``\cite{mckeown2008openflow}. As the technology matured, it has become one of the best known enabling technology for SDN. Generally speaking, a software controller can support multiple of these protocols via its Southbound API making it even more flexible. The choice of such a protocol depends on what protocols the managed devices support mainly. 
+
+With OpenFlow for instance, a controller can manipulate a so-called \textit{flow table } for each switch. This table represents the packet forwarding rules that determine the handling of an incoming packet. If no rule applies, the standard behavior is to send the packet for further analysis to the controller, which will then analyze the packet. This is where the power of SDN comes to play, since an in-depth analysis of the packet can reveal useful information that can be used to determine how to deal with it. The packet can be ignored, it can be forwarded and new rules and routes can be established, or a custom application could trigger an alarm or even trigger the deployment of a new service that might be overloaded or missing. Extending the logic via additional applications is done via the Northbound API. The Westbound API is needed to provide the communication between multiple instance of the controller software. These might be needed to provide fault tolerance or a logical separation of the devices. The last API is located Eastbound and provides a point of communication with legacy networks and downward compatibility. All these different elements that make up an SDN controller can be inspected in Figure \ref{img:sdnAPIs}.
 
 East and Westbound APIs are not part of all architecture specifications and present in Sezer \textit{et al.} \cite{sezer2013we} for instance. The authors reserve the west- and eastbound APIs for inter cluster communication of multiple controller instances. \cite{hu2014survey} \cite{jarschel2014interfaces} \cite{nunes2014survey} \cite{sezer2013we} \cite{shin2012software} \cite{jammal2014software}.
 
+\subsection{NFV}
 \begin{comment}
-
-The programming of the network hardware is realized by using a standardized protocol for communication, depending on what the controller and the managed switches require. One protocol used for this purpose is OpenFlow. The application programming interface (API) that connects the controller to the network infrastructure via this protocol is called the Southbound API as can be seen in figure \ref{img:sdnAPIs}, where the middle box contains the SDN controller software.
-Situated to the left, multiple instances of the controller can communicate with each other. This so-called westbound API allows for the distribution of the network management duties among more than one controller. This helps guarantee higher availability, fault tolerance and scalability. Additionally, separation of concerns can be realized by letting specific instances take care of one logically coherent part of network infrastructure and its devices. To the right side the eastbound API allows for the communication with traditional, non-SDN networks which provides downward compatibility. The implementation is highly dependent on the protocols and technology employed in the legacy networks. 
-
-
-
+ \begin{description}
+ 	\item often monolithic, scaling coarse grained, whole vnf needs to be replicated
+ 	\item some functions repeatedly (unnecessarily) called in sercice function chains
+ 	\item vnf as a bumb in the wire
+ 	\item \cite{chowdhury2019re}
+ \end{description}
 \end{comment}
 
+\subsubsection{NFV SDN relationship}
+% NFV SDN relationship
+Putting a controller in charge of the switching infrastructure in a network allows for flexibility and network programmability. This concept is complementary to that of providing functions in a virtualized manner that have previously been running on purpose-specific hardware. These two concepts do not necessitate each other, since they can be deployed and used independently. Nevertheless, they are in support of the same idea: Facilitating the network setup, operation and upgrade via the means of virtualization and softwarization. Their relationship is so close even that the white paper for NFVs dedicates a subsection to this. Making use of both concepts can proof mutually beneficent since ''[\dots] approaches relying on the separation of the control and data forwarding planes as proposed by SDN can enhance performance, simplify compatibility with existing deployments, and facilitate operation and maintenance procedures. Network Functions Virtualization is able to support SDN by providing the infrastructure upon which the SDN software can run`` \cite{nfv_wp}. 
 
-\subsection{VNF}
 
-\subsection{NFV and NFVI}
-
-Network 
+% NFVs 
+\subsubsection{PNF to VNF}
+After SDN has introduced a paradigm which promises flexible reconfiguration of a network, the idea of running network functions on general purpose hardware in virtualized environments in the form of \textit{NFV} has taken shape. Leaving behing ASIC boxes and orienting oneself towards software solutions lie at the heart of this technique. ETSI, the European Telecommunications Standards Institute, comprised by multiple telecommunications providers and operators, has put forward a white paper in 2012 defining critical aspects in 2012 \cite{nfv_wp}. After this had been published, this proposal has gained a lot of momentum and implementations that allow to make use of this new technology have been put forward, which are taken into consideration when planning and building networks \cite{ordonez2017network}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{images/nfvi.png}
-	\caption{This is the caption \cite{li2015software}}
-	\label{img:nfvi}
+	\includegraphics[width=0.5\textwidth]{images/nfv.png}
+	\caption{From ASICs, to virtual appliances, source \cite{nfv_wp}}
+	\label{img:nfv_wp}
 \end{figure}
 
-\subsection{SDN and NFV}
+Figure \ref{img:nfv_wp} visualizes why SDN and NFV are often described as a \textit{paradigm shift}. The network landscape and physical composition can change considerably as the shift from left to right indicates. The left side shows the classical approach, relying on a multitude of heterogeneous, vendor-specific and non-standardized devices that are built for one specific purpose. These \textit{black boxes} are scattered all over and need to be manually configured in order to work. Implementing their functionality in pure software packaging it into artifacts that can be executed on standard devices present throughout the network, provides an unprecedented liberty in composing and orchestrating the functionalities present in a network. Decoupling the actual application logic from their physical surroundings also favors the emergence of a broader ecosystem where such programs are developed and shared, rendering this concept even more appealing.
+
+\subsubsection{NFV Architecture}
+Virtual appliances can either be developed or procured from emerging software ecosystems. As a part of this vision, an orchestrator platform should take care of automatic procedures like fetching and installing it onto appliances present in the network. The configuration for the packet flow then can be done via SDN (not part of the figure) which shows why these two concepts go hand in hand. 
+
+A conceptual architecture overview is given in Figure \ref{img:nfv_ref_arch}, where several layers are combined to build a reliable and functional system. The bottom summarizes the physical hardware resources available providing different basic functionalities like \textit{compute, storage} and \textit{network}.  By exploiting the available infrastructure, a virtualization layer provides an abstraction that can be used to easier define and provide access to a required set of resources and schedule their provisioning. Predefined and runnable VNFs can subsequently be executed on the abstracted virtualized compute, storage and network devices. The systems that have been built in recent years often use virtual machines to bundle the functionality inside an artifact that can be executed almost anywhere. In order to fulfill the vision of network function virtualization and realize its full potential, automation is key. This is part of the NFV orchestrator's job, that can be fed service deployment requirements and thus reserve the resources needed and deploy the function.
+
+In order to ensure that virtual machines are started and stopped as needed, so that there is a platform for the VNFs to run on, there is another entity needed, namely the Virtualized Infrastructure Manager (VIM). Its responsibilities are focused on mapping the resource needs of the VNFs to specific VMs. The manager has therefore to be in charge of the underlying software that can realize such an infrastructure, including for instance hypervisors, and also the resources needed such as compute, storage and network. Allacating resources for function deployment falls also under its domain by by instantiating virtual machines onto hypervisors. After the initial setup, it should take care of allocating additional resources to VMs and further optimizing their operation. This is also the place for providing an insight into operations for analyzing the performance and realize outward visibility especially for monitoring and optimizing the services \cite{nfv_etsi}. 
+The VIM is part of the NFV Management and Orchestration (MANO) part of the overall architecture, located to the bottom right. The part under its control and management is the Network Function Virtualization Infrastructure (NFVI).
+
+
+A bump in the wire.
+
+\subsubsection{Service Chaining}
+% Service chaining
+Often these functions are chained together in a process called \textit{Service Function Chaining} (SFC as defined in IETF RFC7498) to provide more complex services. Doing this with physical network functions requires manual intervention to setup such a chain. Naturally this such a process is prone to erros and results in static structures that are not easily moved or replicated \cite{luizelli2017actual}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.49\textwidth]{images/nfv_forwarding.png}
+	\caption{NFV forwarding to establish end-to-end connections \cite{nfv_etsi}}
+	\label{img:nfv_forward}
+\end{figure}
+
+\subsubsection{Motivating Use Case: EPC Virtualization}
+At this point it seems appropriate to present a motivating use case where the previously discussed technologies can be demonstrated and which hopefully serves to highlight the inherent advantages. In 4G networks, one of the components is the so-called Evolved Packet Core or EPC. This part of the network is designed to provide the core network infrastructure and has its origins in GSM from where it was continuously upgraded. The breaking change introduced in 4G was the reliance upon Internet Protocol (IP) as the basic protocol to provide all services. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/epc_virt.png}
+	\caption{Virtualization of the Evolved Packet Core \cite{mijumbi2016network}}
+	\label{img:epc_virt}
+\end{figure}
+
+Figure \ref{img:epc_virt} on the left side shows how the several components of the EPC are realized with physical middleboxes and puts it into the perspective of a 4G network. . The first component of the EPC is the Policy and Charging Rules Function Server, whose main function is to take care of the service policy and Quality of Service information on a per-user basis. Establishing connection to external networks is the purpose of the Packet Data Network Gateway, connected with the Serving Gateway. The Mobility Management Entity offers control features with regard to the user equipment which is in most cases not stationary and needs to be able to connect and authenticate in a radio network environment. The physical connection of user equipment (bottom) is being established in a 4G network over the eNodeB base stations that use standardized radio frequencies. The scenario to the right shows how this architecture can be realized when dropping expensive, hard to manage vendor-specific black boxes and rather providing the functionality of the components in a virtualized manner. Scaling and replication can be done via multiple deployments of the same VNF on general purpose hardware found in the supporting data centers. The possibilities at this point are manifold, the Infrastructure as a Service (IaaS) cloud service model for instance allows to rent virtual machines in public clouds, which can complement the private cloud capabilities. 
+
+In comparison with the traditional setup, scaling, updating and many other critical operations can now be performed in a much more economical manner. If load spikes hit the system, deploying new VM instances should take care of the incoming, additional traffic. The overall cost sinks, since only the service needed has to be payed, instead of having to purchase additional function specific devices in case of increased demand \cite{4g} \cite{mijumbi2016network}. 
+
+
+
+\begin{comment}
+
+2)  Evolved  Packet  Core:Virtualizing  the  EPC  is  anotherexample  of  NFV  that  has  attracted  a  lot  of  attention  fromindustry. The EPC is the core network for Long Term Evolu-tion (LTE) as specified by 3GPP [8]. On the left side of Fig.3,  we  show  a  basic  architecture  of  LTE  without  NFV.  TheUser Equipment (UE) is connected to the EPC over the LTEaccess  network  (E-UTRAN).  The  evolved  NodeB  (eNodeB)is the base station for LTE radio. The EPC performs essentialfunctions including subscriber tracking, mobility managementand session management. It is made up of four NFs: ServingGateway  (S-GW),  Packet  Data  Network  (PDN)  Gateway  (P-GW),  Mobility  Management  Entity  (MME),  and  Policy  andCharging  Rules  Function  (PCRF).  It  is  also  connected  toexternal  networks,  which  may  include  the  IP  MultimediaCore  Network  Subsystem  (IMS).  In  the  current  EPC,  all  itsfunctions are based on proprietary equipment. Therefore, evenminor changes to a given function may require a replacementof the equipment. The same applies to cases when the capacityof the equipment has to be changed.On the right side of Fig. 3, we show the same architecture inwhich the EPC is virtualized. In this case, either all functions2The chain of functions that make up a service for which the connectivityorder  is  important  is  know  as  VNF  Forwarding  Graph  (VNFFG)  [9].  Inaddition  to  sequencing  requirements,  the  links  in  a  VNFFG  may  split  (i.e.from one function, packets could take one of many paths which lead to similarfunctionality), or may join.Fig. 3.   Virtualization of the EPCin the EPC, or only a few of them are transferred to a shared(cloud)  infrastructure.  Virtualizing  the  EPC  could  potentiallylead to better flexibility and dynamic scaling, and hence allowTSPs  to  respond  easily  and  cheaply  to  changes  in  marketconditions.  For  example,  as  represented  by  the  number  ofservers  allocated  to  each  function  in  Fig.  3,  there  might  bea  need  to  increase  user  plane  resources  without  affecting  thecontrol  plane.  In  this  case,  VNFs  such  as  a  virtual  MMEmay  scale  independently  according  to  their  specific  resourcerequirements.  In  the  same  way,  VNFs  dealing  with  the  dataplane might require a different number of resources than thosedealing with signaling only. This flexibility would lead to moreefficient  utilization  of  resources.  Finally,  it  also  allows  foreasier software upgrades on the EPC network functions, whichwould hence allow for faster launch of innovative services.
+\end{comment}
+
+% NFV to microservices and containerization???
+
+\subsubsection{NFV Issues}
+% Problems? Copy 1:1 hw appliance to vm, not efficient, throughput/all traffic guided through commodity hardware (-> dpdk) ; Added complexity! Placing functions? No autohealing, scaling, load-balancing, etc. Resilience? Fault-tolerance? Public vs Private cloud
+
+
+
+
+\cite{nfv_wp} \cite{nfv_etsi}
 
 \begin{comment}
 	
-In addition to the purchasing cost, the boxes have to be installed and maintained, causing administrative and operative cost. Since the nature of such devices is proprietary on a hard- and software level, training of personnel has to take vendor specific configuration into consideration. This can even influence the decision whether to invest in a specific implementation of middleboxes, since without the required expertise, the products could seriously endanger any potential profit. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/nfvi.png}
+	\caption{Schematic network architecture using virtual network functions \cite{li2015software}}
+	\label{img:nfvi}
+\end{figure}
 
-Scalability and fault tolerance are often enhanced by introducing additional and redundant devices into the network, adding to the operational cost. Finally, once newer functionality is released on the market, old middleboxes have no possibility of being upgraded. The only way of making use of up-to-date features is to replace the hardware in question \cite{wood2015toward} \cite{sherry2012survey} \cite{bari2015orchestrating} \cite{mekky2017network}.
-
-Turning away from application-specific integrated circuits towards software-based solutions that can be run on general-purpose hardware is the core proposal of Network Function Virtualization. The concept of NFV has been proposed by a special interest group that is part of the European Telecommunications Standards Institute (ETSI) in a white paper in 2012 \cite{nfvWhitePaper}. Since then, the proposal has gained a lot of momentum and is taken into consideration when planing the networks of the future \cite{ordonez2017network}.
+\end{comment}
 
 \begin{figure}[H]
 	\centering
-	%\includegraphics[width=0.85\textwidth]{images/nfv.png}
-	\caption{From ASICs, to virtual appliances, source \cite{nfvWhitePaper}}
-	\label{img:nfv}
+	\includegraphics[width=1\linewidth]{images/nfv_ref_arch.png}
+	\caption{Reference NFV architecture \cite{etsi1etsi}}
+	\label{img:nfv_ref_arch}
 \end{figure}
-The core vision, as taken from the introductory white paper, is to break up the tight coupling of function and physical appliance. Figure \ref{img:nfv} shows this transition from several, tightly and vertically integrated hardware middleboxes, towards a system where the desired services are provided in virtual form by independent software vendors (top right). The underlying hardware consists of devices that can already be found in data centers, like standard high volume servers, storage and Ethernet switches. The deployment of the virtual appliances no longer requires tedious, manual and a per device setup and configuration but can rather be done in an orchestrated, automatic and remote way. The definition of such services has now also been decoupled from hardware development, favoring the emergence of a broader software ecosystem. In this environment the supply of possible network functions rises and updated or new functionality can be obtained remotely. This concept benefits highly from being used in a network environment that realizes SDN principles. The whitepaper, laying out the core principles, even includes a passage that specifies the relationship between NFV and SDN as mutually beneficial: "[...] SDN can enhance performance, simplify compatibility with existing deployments, and facilitate operation and maintenance procedures", while NFV "[...] is able to support SDN by providing the infrastructure upon which the SDN software can be run"\cite{nfvWhitePaper}. 
 
-\end{comment}

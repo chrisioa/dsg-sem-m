@@ -2,11 +2,11 @@
 \input{relatedWork}
 \input{functions}
 
-\section{Enabling Technologies}ea
+\section{Enabling Technologies}
 Extending Networking into the Virtualization Layer (see \cite{pfaff2009extending}) summarizes how the traditionally monolithic and physically bound domain of networking can be broken up and modularized by means of virtualization. The following three parts would focus on enabling and supporting technologies needed to realize the vision of this new paradigm. First, the business logic needs to be packaged and executed. This can happen in virtual machines, containers etc. Following that, virtualized switching technology needs to be put in place to allow for successful packet forwarding. One technology is Open vSwitch which is an implementation of a virtual switch, connecting virtual interfaces of VMs for instance with physical interfaces. Docker and Kubernetes additionally provide means for communication between several, executable artifacts.
 \todo{You quickly move to a tool/implementation. Can you stay on the conceptual level more before you dive into possible solutions? Maybe explain that using a diagram would help?} 
 \subsection{Virtual Machines to Containerization}
-\subsection{Open vSwitch}
+\subsection{DPDK and Open vSwitch}
 \subsection{Kubernetes as Container orchestrator}
 
 \quad
@@ -29,7 +29,7 @@ ETSI proposing NFV architecture already in 2012 in a white paper  \cite{nfv_wp}.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.75\linewidth]{images/cloudNativeApp.png}
-	\caption{This is the caption \cite{CNF}}
+	\caption{The principals of a cloud-native application as defined by the CNF \cite{CNF}}
 	\label{img:cloudNativeApp}
 \end{figure}
 
