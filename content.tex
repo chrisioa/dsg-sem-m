@@ -1,10 +1,11 @@
 \input{intro}
 \input{relatedWork}
 \input{functions}
+\input{cloudnative}
 
 \section{Enabling Technologies}
 Extending Networking into the Virtualization Layer (see \cite{pfaff2009extending}) summarizes how the traditionally monolithic and physically bound domain of networking can be broken up and modularized by means of virtualization. The following three parts would focus on enabling and supporting technologies needed to realize the vision of this new paradigm. First, the business logic needs to be packaged and executed. This can happen in virtual machines, containers etc. Following that, virtualized switching technology needs to be put in place to allow for successful packet forwarding. One technology is Open vSwitch which is an implementation of a virtual switch, connecting virtual interfaces of VMs for instance with physical interfaces. Docker and Kubernetes additionally provide means for communication between several, executable artifacts.
-\todo{You quickly move to a tool/implementation. Can you stay on the conceptual level more before you dive into possible solutions? Maybe explain that using a diagram would help?} 
+
 \subsection{Virtual Machines to Containerization}
 \subsection{DPDK and Open vSwitch} 
 %Circument the kernel, link nic->userspace directly
@@ -13,46 +14,19 @@ Extending Networking into the Virtualization Layer (see \cite{pfaff2009extending
 \quad
 
 
-\subsubsection{Virtualized Network Functions in Network Function Virtualization ( VNFs vs NFVs )}
-NFV and VNF basics \cite{mijumbi2016network} NFV real-world impact \cite{bilal2016impact} Service orchestration \cite{de2019network}
+% NFV to microservices and containerization???
+% Problems? Copy 1:1 hw appliance to vm, not efficient, throughput/all traffic guided through commodity hardware (-> dpdk) ; Added complexity! Placing functions? No autohealing, scaling, load-balancing, etc. Resilience? Fault-tolerance? Public vs Private cloud
+%NFV and VNF basics \cite{mijumbi2016network} NFV real-world impact \cite{bilal2016impact} Service orchestration \cite{de2019network}
 
-\begin{description}
-	\item [VNF] Can complement the SDN paradigm (but can exist independently)  by providing functionality needed in the network domain as an executable artifact
-	\item [NFV] NFV integrates VNFs into a system that can manage and deploy these functions in sensible manner. 
-\end{description}
-\todo{References for the definitions}
-\subsubsection{Organizations and Motivations}
-ETSI proposing NFV architecture already in 2012 in a white paper  \cite{nfv_wp}. The CNCF (Cloud-native Computing Foundation) has launched a testbed to compare the performance of VNFs on an OpenStack enviromnent versus a Kubernetes setup \footnote{https://www.cncf.io/announcement/2019/02/25/cncf-launches-cloud-native-network-functions-cnf-testbed/}	
+%\begin{description}
+%	\item [VNF] Can complement the SDN paradigm (but can exist independently)  by providing functionality needed in the network domain as an executable artifact
+%	\item [NFV] NFV integrates VNFs into a system that can manage and deploy these functions in sensible manner. 
+%\end{description}
 
-
-\section{Cloud-native NFV}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.75\linewidth]{images/cloudNativeApp.png}
-	\caption{The principals of a cloud-native application as defined by the CNF \cite{CNF}}
-	\label{img:cloudNativeApp}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{images/arch.png}
-	\caption{This is the caption \cite{mijumbi2016network}}
-	\label{img:arch}
-\end{figure}
+%\subsubsection{Organizations and Motivations}
+%ETSI proposing NFV architecture already in 2012 in a white paper  \cite{nfv_wp}. The CNCF (Cloud-native Computing Foundation) has launched a testbed to compare the performance of VNFs on an OpenStack enviromnent versus a Kubernetes setup \footnote{https://www.cncf.io/announcement/2019/02/25/cncf-launches-cloud-native-network-functions-cnf-testbed/}	
 
 
-
-\subsection{Interoperability of VNFs}
-\subsection{Cloud Native Architecture}
-A lot of proprietary and custom build environments which VNFs are build for and deployed onto. This limits their effectiveness considerably.
-\subsection{Design Principles for Cloud-native VNFs }
-What is cloud-native, how do these principles relate to  the networking domain? Whitepapers published by Analysys Mason \cite{evolutionnfv} and Cisco \cite{CNF}
-\subsection{Managing VNFs efficiently (CI/CD and Management)}
-Virtual Machines, Openstack vs Docker and Kubernetes managing and orchestrating the deployment of network functionality, what are the benefits? What are drawbacks?
-\subsection{Cloud-native network functions}
-Definition, advantages, state-of-the-art, testbed 
-\todo{I am missing somewhat talking about the problems. What are the challenges that NF solve in general? What changes in the cloud native / K8s world? What does that mean for the challenges that traditional NF solve? I have the feeling, you jump too quickly to the solutions and showing advantages and disadvantages (which is great), but forget to define the problems and challenges clearly before. }
 
 \input{conclusion}
 
