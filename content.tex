@@ -6,17 +6,11 @@
 \section{Enabling Technologies}
 Extending Networking into the Virtualization Layer (see \cite{pfaff2009extending}) summarizes how the traditionally monolithic and physically bound domain of networking can be broken up and modularized by means of virtualization. The following three parts would focus on enabling and supporting technologies needed to realize the vision of this new paradigm. First, the business logic needs to be packaged and executed. This can happen in virtual machines, containers etc. Following that, virtualized switching technology needs to be put in place to allow for successful packet forwarding. One technology is Open vSwitch which is an implementation of a virtual switch, connecting virtual interfaces of VMs for instance with physical interfaces. Docker and Kubernetes additionally provide means for communication between several, executable artifacts.
 
-\subsection{Virtual Machines to Containerization}
-\subsection{DPDK and Open vSwitch} 
-%Circument the kernel, link nic->userspace directly
-\subsection{Kubernetes as Container orchestrator}
 
 \quad
 
 
-% NFV to microservices and containerization???
-% Problems? Copy 1:1 hw appliance to vm, not efficient, throughput/all traffic guided through commodity hardware (-> dpdk) ; Added complexity! Placing functions? No autohealing, scaling, load-balancing, etc. Resilience? Fault-tolerance? Public vs Private cloud
-%NFV and VNF basics \cite{mijumbi2016network} NFV real-world impact \cite{bilal2016impact} Service orchestration \cite{de2019network}
+
 
 %\begin{description}
 %	\item [VNF] Can complement the SDN paradigm (but can exist independently)  by providing functionality needed in the network domain as an executable artifact
