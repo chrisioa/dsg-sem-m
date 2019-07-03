@@ -42,42 +42,48 @@ Figure \ref{img:ovs} shows how the different components of OVS interact. The OVS
 Realizing the actual switch is the ovs-vswitchd daemon, located in user space. Communication and manipulation is being realized via the OpenFlow protocol and the Southbound API of the SDN controller. 
 \cite{openvswitch} \cite{pfaff2015design}. 
 
-
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.8\linewidth]{images/openvswitch.png}
+	\includegraphics[width=1\linewidth]{images/openvswitch.png}
 	\caption{Components and interfaces of Open vSwitch, source \cite{pfaff2015design}}
 	\label{img:ovs}
 \end{figure}
 
 The OpenFlow protocol was developed in an educational environment by McKeown \textit{et al.} \cite{mckeown2008openflow} in 2008. Its main focus was to allow researchers to conduct experiments in their networks, while being "[...] open, vendor neutral, control-data plane interface [...]" \cite{berde2014onos}. Realizing its potential, the Open Networking Foundation (ONF) has adopted management and supports the extension and further development of OpenFlow.
-
-Traditional switches register packets coming from a specific port, analyze them and start to learn where to send them based on the information in the packets' header. This logic is transparent and can not be extended or analyzed. What OpenFlow does, is introducing the possibility of manipulating these flow-tables that "[...] most modern Ethernet switches and routers contain [...]" \cite{mckeown2008openflow}. A flow constitutes a rule, according to which the device has to forward a specific packet. Figure \ref{img:of} shows a possible flow table that is being programmed, i.e. where flows are added and deleted by an SDN Controller software via its Southbound API. For every packet the OpenFlow enabled switch will try and find a match in the table that will tell it exactly what needs to be done. This matching information can be manifold and includes but is not limited to the MAC/IP addresses of the sender or the receiver, the incoming port etc. In Figure \ref{img:of} these fields can be found on the left and are marked in white color. The two fields on the right serve a different purpose. The entry in the \textit{Action} column specifies what needs to be done to the packet if it conforms to the specified criteria. In this example it will either be output via port 1 or 2, dropped if it is directed at a TCP destination port 25, sent to local for processing if the IP destination starts with 192 or sent to the controller if no other rule applies. 
+In traditional forwarding switches packets are being registered from the ports they arrive, analyzed, and from the information in the packets' header specific rules for how to deal with them are learned. The inner workings of this behavior are transparent to the user without a possibility to modify or extend. In contrast, OpenFlow provides a possibility to manipulate so-called flow tables, that represent the rules of how to deal with incoming packets. 
+Figure \ref{img:of} shows such a flow table that prescribes what to do with incoming packets as prescribed by the SDN controller. For each packet, a rule will be looked up from top to bottom which will prescribe the behavior exactly.  Information that can be used to match are various, like for example the MAC and IP addresses, port information and many others. In the figure these fields are marked in white color. The first column in grey prescribes what to do with a certain packet. For instance if a packet is destined to TCP port 25, it shall be dropped. Wildcards can be used and if nothing matches, the last line says to send the packet to the controller. Finally, the last column shows another advantage: Metrics for analysis of how often a rule has been applied. 
+\cite{mckeown2008openflow}. 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\linewidth]{images/of.png}
+	\includegraphics[width=1\linewidth]{images/of.png}
 	\caption{Example of OpenFlow Instruction Set, source \cite{ofWhitePaper}}
 	\label{img:of}
 \end{figure}
 
-In order to mitigate conflicting flow definitions the matching rules can be assigned priorities. The last field in the exemplary table is called \textit{Count} and keeps track of the number of matching packets that have been processed. Providing means for having an insight into the statistics of the capacity utilization can be very helpful, especially when debugging a system. This constitutes the basic functionality of the OpenFlow protocol which will be used by SDN controllers to orchestrate the traffic flow in the network under supervision.
-
-\subsection{Kubernetes}
-
+This matching information can be manifold and includes but is not limited to the MAC/IP addresses of the sender or the receiver, the incoming port etc. In Figure \ref{img:of} these fields can be found on the left and are marked in white color. The two fields on the right serve a different purpose. The entry in the \textit{Action} column specifies what needs to be done to the packet if it conforms to the specified criteria. In this example it will either be output via port 1 or 2, dropped if it is directed at a TCP destination port 25, sent to local for processing if the IP destination starts with 192 or sent to the controller if no other rule applies. 
 
 \subsubsection{Cloud-native paradigm}
-
-%A lot of proprietary and custom build environments which VNFs are build for and deployed onto. This limits their effectiveness considerably.
-%Virtual Machines, Openstack vs Docker and Kubernetes managing and orchestrating the deployment of network functionality, what are the benefits? What are drawbacks?
-What is cloud-native, how do these principles relate to  the networking domain? Whitepapers published by Analysys Mason \cite{evolutionnfv} and Cisco \cite{CNF}
-
-\begin{figure}
+OVS switches, SDN and Openflow allow for unprecedented possibilities to automate network setup and orchestration. 
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.75\linewidth]{images/cloudNativeApp.png}
 	\caption{The principals of a cloud-native application as defined by the CNF \cite{CNF}}
 	\label{img:cloudNativeApp}
 \end{figure}
+
+12 factor app
+
+
+\subsubsection{Kubernetes}
+
+
+
+%A lot of proprietary and custom build environments which VNFs are build for and deployed onto. This limits their effectiveness considerably.
+%Virtual Machines, Openstack vs Docker and Kubernetes managing and orchestrating the deployment of network functionality, what are the benefits? What are drawbacks?
+What is cloud-native, how do these principles relate to  the networking domain? Whitepapers published by Analysys Mason \cite{evolutionnfv} and Cisco \cite{CNF}
+
+
 
 \subsection{CNFs}
 Definition, advantages, state-of-the-art, testbed 
