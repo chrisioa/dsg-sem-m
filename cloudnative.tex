@@ -34,7 +34,7 @@ It is an open source project that was originally build from many preexisting tec
 Docker has gained a lot of popoularity over recent years and as an open source project, it has favored the creation of a large ecosystem around it. This makes the usage of docker much easier, since documentation, community help and tutorials are readily available. When packaging an application or a service inside an image, often dependencies and libraries need to be included. The large ecosystem makes this almost painless, since many, official and verified images already exist that can be used as a basis.
 
 \subsubsection{OVS and OpenFlow}
-Provisioning network functionality inside containers necessitates that the attachement of the containers to the rest of the network can be realized with as much automation as possible, and secondly with high performance. Attaching the containers to virtual switches is an essential step since these can guarantee both of these requirements. 
+Provisioning network functionality inside containers necessitates that the attachment of the containers to the rest of the network can be realized with as much automation as possible, and secondly with high performance. Attaching the containers to virtual switches is an essential step since these can guarantee both of these requirements. 
 
 Open vSwitch is such a switch, using the Openflow protocol to be able to communicate with an SDN controller and thus provide programmability. Since Linux Kernel 3.3, it it comes bundled in it and provides multi layer switches and additional tools for a consistent setup, configuration and monitoring. The documentation provides insight into the authors' vision of what its main purpose is: Making networking easier in multi-server deployments that heavily rely on virtualization. In support of this high-reaching goal are several design characteristics: Making the migration of entities in the network as easy as possible is one of the core advantages of VNFs and CNFs and is realized by allowing the migration of configuration with the associated host. Supporting automation of the network is the fact that OVS holds the state in a database (OVSDB) while supporting triggering events remotely. OVS supports the idea of separating network traffic logically by tagging the packets. Finally, high performance during the interplay of hard- and software is guaranteed by allowing the forwarding path of the bridges to use the in-kernel datapath and directly communicating with the network interface cards (NIC). This also allows for simultaneous management of physical and software networking entities with teh same technology. 
 
@@ -63,35 +63,84 @@ Figure \ref{img:of} shows such a flow table that prescribes what to do with inco
 
 This matching information can be manifold and includes but is not limited to the MAC/IP addresses of the sender or the receiver, the incoming port etc. In Figure \ref{img:of} these fields can be found on the left and are marked in white color. The two fields on the right serve a different purpose. The entry in the \textit{Action} column specifies what needs to be done to the packet if it conforms to the specified criteria. In this example it will either be output via port 1 or 2, dropped if it is directed at a TCP destination port 25, sent to local for processing if the IP destination starts with 192 or sent to the controller if no other rule applies. 
 
+\subsubsection{Kubernetes}
+
+All in all, the combination of these technologies renders unforeseen automation possible, especially in the network domain. When deploying functionality bundled in Docker containers however, interacting directly with the Docker hosts on each compute node for each deployment is very cumbersome. There is the need for a system that manages multiple hosts, provides lifecycle management, load-balancing and scaling. 
+
+Kubernetes is such a system that was developed by Google for its internal needs. The motivation was the handling and usage of Linux containers and the need arose for a management system. Since non existed, the company started developing its own. After building Borg and Omega as closed source systems, Kubernetes is an open source project and can be used in different environments, best known is Google's own public cloud service. 
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{images/k8Arch.png}
+	\caption{Kubernetes Components and their relationship \cite{k8CN}}
+	\label{fig:k8}
+\end{figure}
+
+Figure \ref{fig:k8} summarizes briefly the components of the orchestration system that manages a cluster. One Master manages multiple worker nodes, and generally speaking is not available for application-specific workloads. The single processes doing the orchestration are the following:
+
+\setlength{\leftmargini}{0pt} 
+\begin{description}
+	\item [kube-controller-manager] A daemon, managing several different controllers who know the desired state of the cluster and try to converge the real, observed state towards it. Each controller serves a different domain and has a defined set of responsibilities. Examples are the replication, endpoints, namespace and serviceaccounts controller.
+	
+	\item [kube-scheduler] This process manages the deployment of defined pods that bundle the execution of one or more containers to worker nodes inside the cluster. In order to make a sensible selection, the scheduler needs to know the resource usage of the worker nodes. Additional constraints that might be specified by the user have to be taken into account, too at this point. This is not explicetly included in fiugre \ref{fig:k8} but an essential part of the control plane.
+	
+	\item [kube-apiserver] Central to the management of such a highly distributed system is the communication, which is served via JSON over HTTP. Validation and serving of API requests are the scope of work of this component. 
+	
+\end{description}
+
+Apart from these processes, the manager needs to save the state of the cluster with all relevant information. This is being done in etcd and accessed by the kube-apiserver. The work for controlling the cluster is typically spread over multiple master-nodes to increase fault tolerance and ensure high availability. The etcd database containing the state of all the nodes and the deployments is also replicated and can survive individual failures in the control plane. 
+
+The worker nodes in the cluster are there to provide an environment to execute application specific units. Therefore, a container runtime needs to be provided to start, monitor and stop containers. The process that provides this functionality on the worker nodes is called a kubelet. Ensuring communication not only within the cluster, but also with the rest of the attached network is the kube-proxy. When a worker node failes, the control plane will react to this event and try to mitigate the impact on the overall deployment automatically and ensure availability. Diverting the workload to other worker nodes naturally only works as long as resources are still available in the cluster. 
+
+To sum up, Kubernetes provides a comprehensive management and orchestration framework for containerized applications. A unified approach to orchestrate, manage the lifecycle and monitor the status facilitates the cloud deployment. The general layout of the system is highly distributed and allows the usage of an overlay-network using Open vSwitch. This ensures that high networking performance and flexibility that is needed when building carrier-grade network functions. Additionally, the switches can be managed remotely via an SDN controller. \cite{burns2016borg} \cite{kubernetesUp} \cite{k8CN}
+
+
 \subsubsection{Cloud-native paradigm}
-OVS switches, SDN and Openflow allow for unprecedented possibilities to automate network setup and orchestration. 
+%OVS switches, SDN and Openflow allow for unprecedented possibilities to automate network setup and orchestration. This  
+Software engineering practices have moved in recent years from monolithic approaches towards a microservice architecture. The main characteristic and motivation behind this shift is manifold: Making software more compartmentalized ensures a loose coupling that allows for easier development and upkeep of complex applications. These advantages prescribe the adherence to certain design principles to fully exploit them. 
+Developers at Heroku, especially Adam Wiggins, have summarized these principles into the twelve factor methodology that takes into account the distributed environment of the cloud. Their methodology cloud provider agnostic and helps guide developers towards building software on such a high level of abstraction where automation is key. The 12 factors are as follows:
+
+\setlength{\leftmargini}{0pt} 
+\begin{description}
+	\item[Codebase] When developing an application, it is paramount to avoid fragmentation and keep everything in revision control (e.g. GIT). From one codebase, all the deploys, such as testing or production environments should be started. This ensures reproducibility and reduces the complexity. If multiple repositories with different codebases exist, each can be twelve factor app compliant and together they would form a distributed system.
+	\item[Dependencies] An automated approach that creates an executable software fragment needs to have explicit access to all dependencies needed and thus developers have to declare them. This ensures unproblematic deployment in the target environment since assumptions about the existence of dependencies in the environment are forbidden. 
+	\item[Config] Since there is only one codebase, but multiple deploys on possibly heterogeneous systems, manipulating certain behavior is necessary. This has to be solved by storing configuration in the respective environment. Often configuration variables are stored in constants, which does not allow to make adjustments without the need for rebuilding the complete application. This can be avoided by considering a deployment as bringing together a build artifact and configuration on an execution environment.
+	\item[Backing Services] All related services that are being used need to be treated as resources and thus be detachable and attachable. This allows swapping out services like database for instance without having to adapt the code. 
+	\item[Build, release, run] For each stage, build, release and run, a strict separation needs to be ensured as to not introduce unforeseen behavior. Running a load test against the production environment could be detrimental to the user experience for instance. 
+	\item[Processes] The application shall be realized as a set of stateless processes ensuring proper loose coupling and no side effects. Persistence should be organized with attached resources/services, for instance a remote database. For caching purposes however, using the local file system is acceptable. When a cloud function for instances needs to process a large image in multiple steps, it can use the local filesystem. The results need to be persisted appropriately to not be lost.
+	\item[Port Binding] Inter-service communication is very important and should be realized via listening on exposed ports. The underlying thought is making the twelve factor app completely self-contained. By relying on port-based communication, each app can become the backing service of another by declaring its URL in the configuration of possible consumers. 
+	\item[Concurrency] Since the application should be built as an accumulation of stateless processes, scaling can be realized by replicating the needed process.
+	\item[Disposability] The single processes have to be disposable. Additionally, setup and teardown should be quick to realize to ensure robustness. 
+	\item[Dev/prod parity] Developing in an environment that is as close to the actual production environment as possible ensures easier deployments.
+	\item[Logs] Logging is essential to debug an application and monitor it during execution. All processes treat logs as event streams and use \textit{stdout} and \textit{stderr} to facilitate aggregation by the execution environment. 
+	\item[Admin processes] Tasks of administrative nature (e.g. database migration) should be executed as one-off tasks and kept close the application sources to ensure reproducibility.
+\end{description}
+
+When an application is developed from the ground up with this methodology in mind, it can be called cloud-native. It should be clear by now that simply deploying a monolithic, classical application inside a VM or a single container is possible, but not appropriate for the cloud environment since its advantages can not be fully exploited \cite{hofmann2017microservices} \cite{12Factor}.
+
+\begin{comment}
+	
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.75\linewidth]{images/cloudNativeApp.png}
 	\caption{The principals of a cloud-native application as defined by the CNF \cite{CNF}}
 	\label{img:cloudNativeApp}
 \end{figure}
-
-12 factor app
-
-
-\subsubsection{Kubernetes}
-
-
-
-%A lot of proprietary and custom build environments which VNFs are build for and deployed onto. This limits their effectiveness considerably.
-%Virtual Machines, Openstack vs Docker and Kubernetes managing and orchestrating the deployment of network functionality, what are the benefits? What are drawbacks?
-What is cloud-native, how do these principles relate to  the networking domain? Whitepapers published by Analysys Mason \cite{evolutionnfv} and Cisco \cite{CNF}
+\end{comment}
 
 
 
 \subsection{CNFs}
+Powerful concepts have been introduced that can be used for different purposes when designing a network function that should conform to the cloud native paradigm: Containerization as an alternative concept for more heavyweight, hypervisor based virtualization. Orchestration and management of containerized services can be accomplished by Kubernetes that takes care of multiple issues: Deployment, lifecycle management, fault-tolerance, scaling and load-balancing. The Network Function Virtualization Infrastructure can for instance be realized by using Kubernetes internally. Making use of the clustering concept ensures the abstraction from multiple, physical compute nodes can happen seamlessly while ensuring their efficient usage. Management and monitoring functionality is well documented and built in, reducing the complexity of the Virtualized Infrastructure Managers. Ensuring dynamic and flexible interconnection of the different components on the physical, as well as the virtual level can be accomplished with SDN and the switches under its domain. Open vSwitches and OpenFlow provide an easy and high performance way of interconnecting the different components dynamically. 
+
+
+
+What is cloud-native, how do these principles relate to  the networking domain? Whitepapers published by Analysys Mason \cite{evolutionnfv} and Cisco \cite{CNF}
 Definition, advantages, state-of-the-art, testbed 
 
 % Caveats: Mostly Cisco, lifecycle management, high-performance network, installation and operation
 
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1\linewidth]{images/arch.png}
 	\caption{This is the caption \cite{mijumbi2016network}}
