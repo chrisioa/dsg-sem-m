@@ -130,15 +130,44 @@ When an application is developed from the ground up with this methodology in min
 
 
 \subsection{CNFs}
-Powerful concepts have been introduced that can be used for different purposes when designing a network function that should conform to the cloud native paradigm: Containerization as an alternative concept for more heavyweight, hypervisor based virtualization. Orchestration and management of containerized services can be accomplished by Kubernetes that takes care of multiple issues: Deployment, lifecycle management, fault-tolerance, scaling and load-balancing. The Network Function Virtualization Infrastructure can for instance be realized by using Kubernetes internally. Making use of the clustering concept ensures the abstraction from multiple, physical compute nodes can happen seamlessly while ensuring their efficient usage. Management and monitoring functionality is well documented and built in, reducing the complexity of the Virtualized Infrastructure Managers. Ensuring dynamic and flexible interconnection of the different components on the physical, as well as the virtual level can be accomplished with SDN and the switches under its domain. Open vSwitches and OpenFlow provide an easy and high performance way of interconnecting the different components dynamically. 
+Powerful concepts have been introduced that can be used for different purposes when designing a network function that should conform to the cloud native paradigm: Containerization as an alternative concept to more heavyweight, hypervisor based virtualization. Orchestration and management of containerized services can be accomplished by Kubernetes that takes care of multiple issues: Deployment, lifecycle management, fault-tolerance, scaling and load-balancing. The Network Function Virtualization Infrastructure, responsible for providing an environment to deploy VNFs to, can for instance be realized by using Kubernetes internally. Making use of the clustering concept ensures that the abstraction from multiple, physical compute nodes can happen seamlessly while ensuring their efficient usage. Management and monitoring functionality is well documented and built in, reducing the complexity of the Virtualized Infrastructure Managers. Their role shifts towards managing and monitoring the Kubernetes clusters available. Ensuring dynamic and flexible interconnection of the different components on the physical, as well as the virtual level can be accomplished with SDN and the switches under its domain. Open vSwitches and OpenFlow provide an easy and high performance way of interconnecting the different components dynamically. 
+
+Realizing this vision is in the scope of Cloud-native Network Functions. When NFV was proposed by ETSI in 2012 in a white paper, work on Docker and Kubernetes had not started yet. The status quo were a plethora of physical middleboxes providing specialized functionality and the cloud had not the importance it holds today. Even so, cloud-native principles can be recognized in identified challenges of the document. Portability between several hardware vendors and different virtualization realization (e.g. hypervisors) had been identified. Management and Orchestration and automation efforts are central to scalability and profitable operations. The idea of building systems that can tolerate partial failures and are robust is still important to cloud native application development.
+In the 2017 revision of the white paper, ETSI explicitly picked up the CNF concept. The additional benefit, especially in delimitation to VNFs is the fact that the functions are designed from the ground up with the execution in a cloud environment in mind. 
+
+The acceptance of this new paradigm is steadily rising, various vendors and initiative explore its possible usage scenarios and propose ways of adapting it on various abstraction levels (i.e. from high level architectures to actual products). 
+The 5G-PPP (5G Infrastructure Public Private Partnership) initiative for instance has released a white paper titled \textit{From Webscale to Telco, the Cloud Native Journey} \cite{5gppp} that specifically tries to apply the experiences and best practices gathered in the cloud application engineering to the networking domain. The self-proclaimed goa is to ``[\dots] avoid the risk that 5G remains a niche connectivity gap-filler largely ignored by cloud applications and services boom'' \cite{5gppp}. The risk stems from the fact that this technology is very expensive, and can only become profitable when the new possibilities are fully taken advantage of. This entails providing end-to-end services on a per-customer basis, which poses considerable challenges. These can only be achieved, when fully embracing all the previously mentioned concepts and taking them into consideration when designing both, the Virtualized Network Functions, as well as the infrastructure they are supposed to be deployed to \cite{5ggp}.
 
 
 
-What is cloud-native, how do these principles relate to  the networking domain? Whitepapers published by Analysys Mason \cite{evolutionnfv} and Cisco \cite{CNF}
-Definition, advantages, state-of-the-art, testbed 
 
-% Caveats: Mostly Cisco, lifecycle management, high-performance network, installation and operation
+% Implementations NFV4ARM
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{images/nfv4arm.png}
+	\caption{ONAP extension for NFV on ARM \cite{nfv4arm}}
+	\label{fig:nfv4arm}
+\end{figure}
 
+Implementing the Cloud-native Network Function (CNF) functionality in orchestrator software already exists and can serve to showcase how this can be realized. An extension to the Open Network Automation Platform (ONAP), part of the Linux Foundation that exposes a southbound API to communicate with a NFVI/VIM, can be seen in figure \ref{fig:nfv4arm}. This is a hybrid model since over the southbound API a classical VNF Manager (VNFM) is attached that uses openstack to manage virtual machines and additionally, a Containerized-VNFM has been registered to the automation platform. This manager coordinates the CNF deployment via directly via the kubernetes master node, that is in charge of the different worker nodes. 
+
+
+\begin{comment}
+	“Lift and shift” architectures brought certain benefits of virtualization, mostly related to the fact that
+	the hardware can be shared between different functions. However, they did not solve issues related to scaling, feature velocity and availability because the code was still a monolith captured in a VM.
+	Cloud native (which encompasses the three disciplines mentioned above) is a re-design of the
+	network functions themselves.
+	Current cloud native systems are focused on managing enterprise and web commerce, not packet
+	forwarding. The purpose of this paper is to show that all the issues related to building a cloud native
+	NFVs are solvable problems. The design principals that made cloud native a success can be applied
+	to network function virtualization as well, driving the same service velocity, availability and scaling
+	to the networking world.
+	
+	cloud native network function virtualization true cloud for nfv
+\end{comment}
+
+
+
+\begin{comment}
 
 \begin{figure}[h]
 	\centering
@@ -147,3 +176,4 @@ Definition, advantages, state-of-the-art, testbed
 	\label{img:arch}
 \end{figure}
 
+\end{comment}
