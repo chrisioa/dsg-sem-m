@@ -15,6 +15,5 @@ jobs:
                 cd PresTeX/
                 latexmk -pdf Christos_Ioannidis_Deliverable3.tex
                 mv Christos_Ioannidis_Deliverable3.pdf ../result/
-                ls -lah result
         - store-artifacts:
             path: result
