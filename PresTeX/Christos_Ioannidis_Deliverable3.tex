@@ -1,0 +1,254 @@
+%===============================================================================
+% Zweck:    KTR-Präsentation-Vorlage
+% Erstellt: 15.04.2013
+% Update:   04.07.2016
+% Autor:    M.G.
+%===============================================================================
+\RequirePackage[hyphens]{url}
+\newcommand\ratio{169}
+\documentclass[10pt,aspectratio=\ratio,
+%draft,
+%handout,
+compress
+]{beamer}
+\usepackage{verbatim}
+\usepackage{pifont}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{mdframed}
+\usepackage{listings}
+
+\newcommand\meta{./meta}
+\input{\meta/config/commands}
+
+
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{fancyquotes}}
+  {\signed{\usebox\mybox}\end{fancyquotes}}
+
+
+\input{\meta/config/hyphenation}
+
+\setbeamertemplate{caption}[numbered]
+%\numberwithin{figure}{section}
+
+\begin{document}
+  %===============================================================================
+  % Zum Kompilieren latexmk ausführen.
+  %	Konfiguration in texmaker: Options -> Configure Texmaker -> Quick Build -> Select Latexmk + ViewPD
+  %	Entsprechende Informationen in den config/metainfo verändern
+  % Zur Auswahl der Sprache im folgenden Befehl
+  % ngerman für deutsch eintragen, english für Englisch.
+  %===============================================================================
+\selectlanguage{english}
+\ifnum\ratio<169
+\frame{\titlepage}
+\else
+\frame[plain]{\titlepage}
+\fi
+
+%\AtBeginSection[]
+%{
+%  \frame<handout:0>
+%  {
+%    \frametitle{Outline}
+%    \tableofcontents[currentsection,hideallsubsections]
+%  }
+%}
+
+\AtBeginSubsection[]
+{
+  \frame<handout:0>
+  {
+    \frametitle{Outline}
+    \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/shaded/hide,subsubsectionstyle=hide]
+  }
+}
+
+\AtBeginSubsubsection[]
+{
+  \frame<handout:0>
+  {
+    \frametitle{Outline}
+    \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+  }
+}
+
+\newcommand<>{\highlighton}[1]{%
+  \alt#2{\structure{#1}}{{#1}}
+}
+
+\newcommand{\icon}[1]{\pgfimage[height=1em]{#1}}
+
+\section*{}
+\phantomsection
+\begin{frame}{Content}
+\tableofcontents
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Content starts here %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Network Functions  -  4G Architecture}
+
+%\frame{\frametitle{Introduction - 4G Architecture}
+%	\begin{figure}
+%		\includegraphics[width=0.5\linewidth]{images/raninterfaces.png}
+%		\caption{Radio Access Network interfaces \cite{dahlman20164g}}
+%	\end{figure}
+%}
+
+\frame{\frametitle{Network Functions - 4G Architecture}
+	\begin{figure}
+		\includegraphics[width=0.25\linewidth]{images/epc.png}
+		\caption{Evolved Packet Core architecture \cite{dahlman20164g}, Home Subscriber Service, Mobility Management Entity, Serving Gateway, Packet Data Network Gateway}
+	\end{figure}
+}
+
+
+
+\section{Physical Network Service Composition}
+\frame{\frametitle{Physical Network Service Composition} \framesubtitle{Numbers}
+	\begin{figure}
+		\includegraphics[width=0.8\linewidth]{images/middleboxesNumbers.png}
+		\caption{Number of physical middleboxes in enterprise and public networks  \cite{sherry2016middleboxes}}
+	\end{figure}
+}
+
+\frame{\frametitle{Physical Network Service Composition} \framesubtitle{Cost}
+	\begin{figure}
+		\includegraphics[width=0.8\linewidth]{images/middleboxesCost.png}
+		\caption{Cost of physical middleboxes  \cite{sherry2016middleboxes}}
+	\end{figure}
+}
+
+\section{Virtualization}
+\subsection{Motivation}
+\frame{\frametitle{Network Virtualization} \framesubtitle{Motivation}
+	Disadvantages of Physical Network Service Composition
+	\begin{itemize}
+		\item Physical appliances need physical processing (acquisition, deployment, setup...)
+		\item Manual, vendor specific configuration
+		\item Long time to market
+		\item Inflexible service composition
+		\item hard and costly maintenance
+	\end{itemize}
+}
+
+\frame{\frametitle{Network Virtualization} \framesubtitle{Motivation}
+	 \begin{figure}
+	 	\includegraphics[width=0.6\linewidth]{images/nfv.png}
+	 	\caption{Traditional vs virtual network functions\cite{nfv_wp}}
+	 \end{figure}
+}
+
+
+\subsection{NFV}
+
+\frame{\frametitle{Network Function Virtualization} \framesubtitle{NFVI Architecture}
+	\begin{figure}
+		\includegraphics[width=0.7\textwidth]{images/nfvi.png}
+		\caption{Network Function Virtualization Infrastructure \cite{ li2015software}}
+	\end{figure}
+}
+
+\frame{\frametitle{Network Function Virtualization} \framesubtitle{Reference Architecture}
+	\begin{figure}
+		\includegraphics[width=0.6\textwidth]{images/nfv_ref_arch.png}
+		\caption{The ETSI NFV Reference Architecture \cite{etsi1etsi}}
+	\end{figure}
+}
+
+\frame{\frametitle{Network Function Virtualization} \framesubtitle{End-to-end services}
+	\begin{figure}
+		\includegraphics[width=0.7\textwidth]{images/nfv_forwarding.png}
+		\caption{NFV forwarding to establish end-to-end connections \cite{ etsi1etsi}}
+	\end{figure}
+}
+
+
+\subsection{CNF}
+\frame{\frametitle{Cloud-native Network Function Virtualization} \framesubtitle{Evolution}
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{images/vnctocnf.png}
+		\caption{Evolution from VNF to CNF architecture \footnote{\url{https://community.infoblox.com/t5/Cloud-Native/En-Route-to-Cloud-Native-Network-Functions/ba-p/16311}}}
+	\end{figure}
+}
+
+\frame{\frametitle{CNF Example Architecture}
+	\begin{figure}
+		\includegraphics[width=0.9\textwidth]{images/nfv4arm3.png}
+		\caption{Example architecture using Kubernetes to provide an NFV Infrastructure on ARM devices \cite{nfv4arm}}
+	\end{figure}
+}
+
+
+\section{Summary \& Future Work}
+\frame{\frametitle{Summary \& Future Work}
+	Summary
+	\begin{itemize}
+		\item Large-scale networks have long used middleboxes
+		\item Breaking up vertical integration to enable flexibility and reduce cost
+		\item NFV concept and architectures have been introduced
+		\item SDN for programmable networks
+		\item CNF to enable unprecedented automation
+	\end{itemize}
+	
+	Future Work
+	\begin{itemize}
+		\item Explore technical details of networking of Docker and K8 (dpdk, ovs, etc)
+		\item Investigate real life adaption (Orange indicates $\sim$ 50~\% virtualization)
+		\item Explore realization of DevOps for CNF
+	\end{itemize}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% References          %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Last frame
+\frame{
+  \vspace{2cm}
+  {\huge Thanks for your attention!}
+
+  \vspace{20mm}
+  \nocite*
+
+  \begin{flushright}
+    Christos Ioannidis
+
+    \structure{\footnotesize{\href{mailto:christos.ioannidis@stud.uni-bamberg.de}{christos.ioannidis@stud.uni-bamberg.de}}}
+  \end{flushright}
+}
+
+
+\begin{frame}[allowframebreaks]{References - Selection}
+	\def\newblock{\hskip .11em plus .33em minus .07em}
+	\scriptsize
+	\bibliographystyle{IEEEtran}
+	\bibliography{literature/literature.bib}
+	\normalsize
+\end{frame}
+
+\frame{\frametitle{Software Defined Networking}	
+	\begin{figure}
+		\includegraphics[width=0.8\textwidth]{images/sdn.png}
+		\caption{Separation of the data/control planes \cite{li2015software}}
+	\end{figure}
+}
+
+\frame{\frametitle{Software Defined Networking}	
+	\begin{figure}
+		\includegraphics[width=0.8\textwidth]{images/sdnAPIs.png}
+		\caption{SDN controller APIs \cite{jarschel2014interfaces}}
+	\end{figure}
+}
+
+\end{document}
