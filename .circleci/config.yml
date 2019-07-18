@@ -10,7 +10,7 @@ jobs:
             command: |
                 ls -la
                 latexmk -pdf main.tex 
-                latexml -pdf PresTeX/Christos_Ioannidis_Deliverable3.tex
+                latexmk -pdf PresTeX/Christos_Ioannidis_Deliverable3.tex
                 mkdir result || true
                 mv main.pdf result/
                 mvn PresTeX/Christos_Ioannidis_Deliverable3.pdf result/
