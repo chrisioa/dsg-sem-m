@@ -19,7 +19,6 @@ presentation.pdf
 *.fls
 *.fdb_latexmk
 # Stylesheets and classes only in meta directory
-*.sty
 *.cls
 *.bst
 *.gin
